@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project name="SwingTranslator" default="run">
+	<!-- define placement of catalogues -->
+	<!-- задаём расположение директорий -->
+	<property name="src" location="src/"/>
+	<property name="lib" location="lib/"/>
+	<property name="build" location="build/"/>
+	<property name="classes" location="${build}/classes/"/>
+	<property name="package" value="ru.slavalisoff.${ant.project.name}"/>
+	<property name="version" value="0.1.0"/>
+	<!-- define targets -->
+	<!-- задаём цели -->
+	<target name="clean">
+		<!-- this target delete "build" catalogue -->
+		<!-- данная цель удаляет диркторию "build" -->
+		<delete dir="build"/>
+	</target>
+	<target name="compile" depends="clean">
+		<!-- this target compile java-code to class-files -->
+		<!-- данная цель компилирует java-код в class-файлы -->
+		<echo>Compiling project</echo>
+		<mkdir dir="build/classes"/>
+		<javac srcdir="${src}" destdir="${classes}" includeAntRuntime="false"/>
+	</target>
+	<target name="run" depends="package">
+		<!-- this target execute class-files -->
+		<!-- данная цель выполняет class-файлы -->
+		<echo>Program output:</echo>
+		<java jar="${build}/${package}-${version}.jar" fork="true"/>
+	</target>
+	<target name="package" depends="compile">
+		<!-- this target assemble executable jar-file -->
+		<!-- данная цель собирает исполняемый jar-файл -->
+		<echo>Building jar</echo>
+		<jar destfile="${build}/${package}-${version}.jar" basedir="${classes}">
+			<manifest>
+				<attribute name="Main-Class" value="${package}"/>
+			</manifest>
+		</jar>
+	</target>
+</project>
